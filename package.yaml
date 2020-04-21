@@ -6,6 +6,8 @@ author:              "Author name here"
 maintainer:          "example@example.com"
 copyright:           "2020 Author name here"
 
+ghc-options: -Wall -Werror
+
 extra-source-files:
 - README.md
 - ChangeLog.md
@@ -20,7 +22,8 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/haskell-mixfix#readme>
 
 dependencies:
-- base >= 4.7 && < 5
+  - base >= 4.7 && < 5
+  - parsec >= 3.1.14.0 && < 3.2
 
 library:
   source-dirs: src

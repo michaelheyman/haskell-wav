@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0a943dc6ba431b3a97bf636b9d5a9ef44047e88297b3fa8e6edbf1d913e83a27
+-- hash: cf42028e22d8a4473c4864bcdc34ad7b93e3a6265e0caf4f85d867060fbf941f
 
 name:           haskell-mixfix
 version:        0.1.0.0
@@ -32,8 +32,10 @@ library
       Paths_haskell_mixfix
   hs-source-dirs:
       src
+  ghc-options: -Wall -Werror
   build-depends:
       base >=4.7 && <5
+    , parsec >=3.1.14.0 && <3.2
   default-language: Haskell2010
 
 executable haskell-mixfix-exe
@@ -42,10 +44,11 @@ executable haskell-mixfix-exe
       Paths_haskell_mixfix
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , haskell-mixfix
+    , parsec >=3.1.14.0 && <3.2
   default-language: Haskell2010
 
 test-suite haskell-mixfix-test
@@ -55,8 +58,9 @@ test-suite haskell-mixfix-test
       Paths_haskell_mixfix
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , haskell-mixfix
+    , parsec >=3.1.14.0 && <3.2
   default-language: Haskell2010
