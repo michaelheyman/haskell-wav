@@ -6,11 +6,11 @@ cabal-version: 1.12
 --
 -- hash: cf42028e22d8a4473c4864bcdc34ad7b93e3a6265e0caf4f85d867060fbf941f
 
-name:           haskell-mixfix
+name:           haskell-wav
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/haskell-mixfix#readme>
-homepage:       https://github.com/githubuser/haskell-mixfix#readme
-bug-reports:    https://github.com/githubuser/haskell-mixfix/issues
+description:    Please see the README on GitHub at <https://github.com/githubuser/haskell-wav#readme>
+homepage:       https://github.com/githubuser/haskell-wav#readme
+bug-reports:    https://github.com/githubuser/haskell-wav/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2020 Author name here
@@ -23,13 +23,13 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/haskell-mixfix
+  location: https://github.com/githubuser/haskell-wav
 
 library
   exposed-modules:
       Lib
   other-modules:
-      Paths_haskell_mixfix
+      Paths_haskell_wav
   hs-source-dirs:
       src
   ghc-options: -Wall -Werror
@@ -38,29 +38,29 @@ library
     , parsec >=3.1.14.0 && <3.2
   default-language: Haskell2010
 
-executable haskell-mixfix-exe
+executable haskell-wav-exe
   main-is: Main.hs
   other-modules:
-      Paths_haskell_mixfix
+      Paths_haskell_wav
   hs-source-dirs:
       app
   ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , haskell-mixfix
+    , haskell-wav
     , parsec >=3.1.14.0 && <3.2
   default-language: Haskell2010
 
-test-suite haskell-mixfix-test
+test-suite haskell-wav-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_haskell_mixfix
+      Paths_haskell_wav
   hs-source-dirs:
       test
   ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , haskell-mixfix
+    , haskell-wav
     , parsec >=3.1.14.0 && <3.2
   default-language: Haskell2010

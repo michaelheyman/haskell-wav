@@ -1,4 +1,4 @@
-# haskell-mixfix
+# haskell-wav
 
 ## How to Develop
 
