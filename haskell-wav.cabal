@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d2d586b9ec52098fa2ae40ea7854f0804473241d153b40d9e016e617edff3048
+-- hash: b2edd7ccae65f5077dad0a1308915a19c7b7754054a022ea30e4b3ff5f0d0f00
 
 name:           haskell-wav
 version:        0.1.0.0
@@ -28,13 +28,19 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Parser
+      Types
   other-modules:
       Paths_haskell_wav
   hs-source-dirs:
       src
   ghc-options: -Wall -Werror
   build-depends:
-      base >=4.7 && <5
+      attoparsec
+    , attoparsec-binary
+    , base >=4.7 && <5
+    , bytestring
+    , text
   default-language: Haskell2010
 
 executable haskell-wav-exe
@@ -45,8 +51,12 @@ executable haskell-wav-exe
       app
   ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      attoparsec
+    , attoparsec-binary
+    , base >=4.7 && <5
+    , bytestring
     , haskell-wav
+    , text
   default-language: Haskell2010
 
 test-suite haskell-wav-test
@@ -58,6 +68,10 @@ test-suite haskell-wav-test
       test
   ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      attoparsec
+    , attoparsec-binary
+    , base >=4.7 && <5
+    , bytestring
     , haskell-wav
+    , text
   default-language: Haskell2010
