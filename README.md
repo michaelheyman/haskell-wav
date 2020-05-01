@@ -5,6 +5,20 @@
 `haskell-wav` is a library that parses WAV files and extracts its metadata into an AST.
 It allows developers to programmatically query the contents of these types of files in their Haskell programs.
 
+## How to Develop
+
+### Running the Application
+
+1. Install dependencies: `stack install`
+1. Start the application: `stack build`
+
+### Before Committing Changes
+
+1. Ensure that `pre-commit` and its configuration are installed
+    * Install `pre-commit`: `brew install pre-commit` or `pip install pre-commit`
+    * Install the commit hooks: `pre-commit install`
+2. Run `hpack` if changes are made to `package.yaml` or new modules are added.
+
 ## WAV Specification
 
 More information can be found in the [WAV Specification](https://en.wikipedia.org/wiki/WAV#Specification) page.
@@ -43,13 +57,3 @@ The WAV binary file format is split three chunks:
 | SubchunkID   |                  4 |                  36 | Big    |
 | SubchunkSize |                  4 |                  40 | Little |
 | Data         |       SubchunkSize |                  44 | Little |
-
-## How to Develop
-
-1. Install dependencies: `stack install`
-1. Start the application: `stack build`
-
-Until commit hooks are setup, before committing changes:
-
-* Run `hpack` if changes are made to `package.yaml` or new modules are added.
-* Run `hlint src/*` and `stylish-haskell -i src/*`
