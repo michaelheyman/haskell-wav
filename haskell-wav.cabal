@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b2edd7ccae65f5077dad0a1308915a19c7b7754054a022ea30e4b3ff5f0d0f00
+-- hash: 5cbd63976042b66ae3dc11cc566252d043b7010131ae632bf860422922d508c3
 
 name:           haskell-wav
 version:        0.1.0.0
@@ -72,6 +72,9 @@ test-suite haskell-wav-test
     , attoparsec-binary
     , base >=4.7 && <5
     , bytestring
+    , directory
     , haskell-wav
+    , hspec
+    , hspec-attoparsec
     , text
   default-language: Haskell2010

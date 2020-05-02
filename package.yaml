@@ -51,4 +51,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - directory
     - haskell-wav
+    - hspec
+    - hspec-attoparsec
