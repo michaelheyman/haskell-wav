@@ -6,7 +6,7 @@ author:              "Michael Heyman"
 maintainer:          "michaelheyman@users.noreply.github.com"
 copyright:           "2020 Michael Heyman"
 
-ghc-options: -Wall -Werror
+ghc-options: -Wall
 
 extra-source-files:
 - README.md

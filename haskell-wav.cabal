@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5cbd63976042b66ae3dc11cc566252d043b7010131ae632bf860422922d508c3
+-- hash: e8f5e84516f0a626f0afa7ab48a2c96af8b9c6cff5f39aa9915fddf395fd5f6f
 
 name:           haskell-wav
 version:        0.1.0.0
@@ -34,7 +34,7 @@ library
       Paths_haskell_wav
   hs-source-dirs:
       src
-  ghc-options: -Wall -Werror
+  ghc-options: -Wall
   build-depends:
       attoparsec
     , attoparsec-binary
@@ -49,7 +49,7 @@ executable haskell-wav-exe
       Paths_haskell_wav
   hs-source-dirs:
       app
-  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       attoparsec
     , attoparsec-binary
@@ -66,7 +66,7 @@ test-suite haskell-wav-test
       Paths_haskell_wav
   hs-source-dirs:
       test
-  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       attoparsec
     , attoparsec-binary
