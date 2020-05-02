@@ -1,6 +1,6 @@
 module Types where
 
-import           Data.Text (Text)
+import           Data.ByteString (ByteString)
 import           Data.Word
 
 data Wave = Wave
@@ -11,14 +11,14 @@ data Wave = Wave
     deriving (Show, Eq)
 
 data Riff = Riff
-    { riffChunkID     :: Text
+    { riffChunkID     :: ByteString
     , riffChunkSize   :: Word32
-    , riffChunkFormat :: Text
+    , riffChunkFormat :: ByteString
     }
     deriving (Show, Eq)
 
 data Format = Format
-    { formatChunkID       :: Text
+    { formatChunkID       :: ByteString
     , formatChunkSize     :: Word32
     , formatAudioFormat   :: Word16
     , formatNumChannels   :: Word16
@@ -32,6 +32,6 @@ data Format = Format
 data Data = Data
     { dataChunkID   :: Word32
     , dataChunkSize :: Word32
-    , dataData      :: Text
+    , dataData      :: ByteString
     }
     deriving (Show, Eq)
