@@ -7,7 +7,7 @@ import           Data.Attoparsec.Binary     (anyWord16le, anyWord32be,
 import           Data.Attoparsec.ByteString (Parser, string, take)
 import           Data.ByteString            (ByteString)
 import           Data.Word                  (Word16, Word32)
-import           Prelude                    hiding (take)
+import           Prelude                    hiding (concat, take)
 
 import           Types
 
@@ -47,3 +47,11 @@ dataParser = do
     chunkSize <- anyWord32le
     chunkData <- take $ fromIntegral $ toInteger chunkSize
     return $ Data chunkID chunkSize chunkData
+
+{-# ANN wavParser ("HLint: ignore Use <$>" :: String) #-}
+wavParser :: Parser Wav
+wavParser = do
+    riff <- riffParser
+    format <- formatParser
+    dataChunk <- dataParser
+    return $ Wav riff format dataChunk

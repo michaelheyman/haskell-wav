@@ -1,9 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import           Data.ByteString       (ByteString)
+import           Data.ByteString       (ByteString, concat)
 import           Parser
 import           Test.Hspec
 import           Test.Hspec.Attoparsec
+
+import           Prelude               hiding (concat)
 
 specChunkId :: Spec
 specChunkId =
@@ -111,6 +113,16 @@ specData =
             dataParser `shouldFailOn` ("0001\HT\NUL\NUL\NUL12345678" :: ByteString)
             dataParser `shouldFailOn` ("0001\LF\NUL\NUL\NUL123456789" :: ByteString)
 
+specWav :: Spec
+specWav =
+    describe "wavParser" $
+        it "should parse a valid wav file" $ do
+            let validRiff = "RIFF1000WAVE"
+            let validFormat = "fmt11112233444455556677"
+            let validData = "0001\SOH\NUL\NUL\NUL1"
+            let wav = concat [validRiff, validFormat, validData]
+            wavParser `shouldSucceedOn` wav
+            wav ~?> wavParser `leavesUnconsumed` ""
 
 main :: IO ()
 main = do
@@ -120,3 +132,4 @@ main = do
     hspec specAudioFormat
     hspec specFormat
     hspec specData
+    hspec specWav

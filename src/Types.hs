@@ -3,10 +3,10 @@ module Types where
 import           Data.ByteString (ByteString)
 import           Data.Word
 
-data Wave = Wave
-    { waveRiff   :: Riff
-    , waveFormat :: Format
-    , waveData   :: Data
+data Wav = Wav
+    { wavRiff   :: Riff
+    , wavFormat :: Format
+    , wavData   :: Data
     }
     deriving (Show, Eq)
 
