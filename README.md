@@ -12,6 +12,15 @@ It allows developers to programmatically query the contents of these types of fi
 1. Install dependencies: `stack install`
 1. Start the application: `stack build`
 
+### Continuous Compilation with GHCID
+
+1. Install `ghcid`: `stack install ghcid`
+2. Run `ghcid` while developing to compile and reload on code changes:
+
+```bash
+ghcid --command="stack ghci src/Parser.hs test/Spec.hs"
+```
+
 ### Before Committing Changes
 
 1. Ensure that `pre-commit` and its configuration are installed
