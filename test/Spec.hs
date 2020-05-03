@@ -53,8 +53,38 @@ specRiff =
         it "should fail when the chunkFormat does not equal 'WAVE'" $
             riffParser `shouldFailOn` ("RIFF1000OGG" :: ByteString)
 
+specAudioFormat :: Spec
+specAudioFormat =
+    describe "parseAudioFormat" $
+      it "should parse the audio format" $ do
+        parseAudioFormat `shouldSucceedOn` ("10" :: ByteString)
+        ("10" :: ByteString) ~?> parseAudioFormat `leavesUnconsumed` ""
+
+specFormat :: Spec
+specFormat =
+    describe "formatParser" $ do
+        it "should parse a valid format" $ do
+            let validFormat = "fmt11112233444455556677" :: ByteString
+            formatParser `shouldSucceedOn` validFormat
+            validFormat ~?> formatParser `leavesUnconsumed` ""
+        it "should fail when the chunkID does not equal 'fmt'" $
+            formatParser `shouldFailOn` ("tmf11112233444455556677" :: ByteString)
+        it "should fail when chunks are missing" $ do
+            formatParser `shouldFailOn` ("" :: ByteString)
+            formatParser `shouldFailOn` ("fmt" :: ByteString)
+            formatParser `shouldFailOn` ("fmt" :: ByteString)
+            formatParser `shouldFailOn` ("fmt1111" :: ByteString)
+            formatParser `shouldFailOn` ("fmt111122" :: ByteString)
+            formatParser `shouldFailOn` ("fmt11112233" :: ByteString)
+            formatParser `shouldFailOn` ("fmt111122334444" :: ByteString)
+            formatParser `shouldFailOn` ("fmt1111223344445555" :: ByteString)
+            formatParser `shouldFailOn` ("fmt111122334444555566" :: ByteString)
+
+
 main :: IO ()
 main = do
     hspec specChunkId
     hspec specChunkSize
     hspec specRiff
+    hspec specAudioFormat
+    hspec specFormat

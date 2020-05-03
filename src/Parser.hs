@@ -2,10 +2,10 @@
 
 module Parser where
 
-import           Data.Attoparsec.Binary     (anyWord32le)
+import           Data.Attoparsec.Binary     (anyWord16le, anyWord32le)
 import           Data.Attoparsec.ByteString (Parser, string)
 import           Data.ByteString            (ByteString)
-import           Data.Word
+import           Data.Word                  (Word16, Word32)
 
 import           Types
 
@@ -22,8 +22,21 @@ riffParser = do
     chunkFormat <- string "WAVE"
     return $ Riff chunkID chunkSize chunkFormat
 
+parseAudioFormat :: Parser Word16
+parseAudioFormat = anyWord16le
+
+{-# ANN formatParser ("HLint: ignore Use <$>" :: String) #-}
 formatParser :: Parser Format
-formatParser = undefined
+formatParser = do
+    chunkID <- string "fmt"
+    chunkSize <- anyWord32le
+    audioFormat <- anyWord16le
+    numChannels <- anyWord16le
+    sampleRate <- anyWord32le
+    byteRate <- anyWord32le
+    blockAlign <- anyWord16le
+    bitsPerSample <- anyWord16le
+    return $ Format chunkID chunkSize audioFormat numChannels sampleRate byteRate blockAlign bitsPerSample
 
 dataParser :: Parser Data
 dataParser = undefined
