@@ -8,20 +8,30 @@ import           Test.Hspec.Attoparsec
 specChunkId :: Spec
 specChunkId =
     describe "parseChunkID" $
-      it "should parse the bytestring riff" $
+      it "should parse the bytestring riff" $ do
         parseChunkID `shouldSucceedOn` ("RIFF" :: ByteString)
+        ("RIFF" :: ByteString) ~?> parseChunkID `leavesUnconsumed` ""
 
 specChunkSize :: Spec
 specChunkSize =
     describe "parseChunkSize" $ do
-        it "should parse the 32-bit word '0000'" $
-            parseChunkSize `shouldSucceedOn` ("0000" :: ByteString)
-        it "should parse the 32-bit word '1000'" $
-            parseChunkSize `shouldSucceedOn` ("1000" :: ByteString)
-        it "should parse the 32-bit word '5555'" $
-            parseChunkSize `shouldSucceedOn` ("5555" :: ByteString)
-        it "should parse the 32-bit word '9999'" $
-            parseChunkSize `shouldSucceedOn` ("9999" :: ByteString)
+        -- TODO: use QuickCheck to generate valid Word32 and replace these tests
+        it "should parse the 32-bit word '0000'" $ do
+            let word = "0000" :: ByteString
+            parseChunkSize `shouldSucceedOn` word
+            word ~?> parseChunkSize `leavesUnconsumed` ""
+        it "should parse the 32-bit word '1000'" $ do
+            let word = "1000" :: ByteString
+            parseChunkSize `shouldSucceedOn` word
+            word ~?> parseChunkSize `leavesUnconsumed` ""
+        it "should parse the 32-bit word '5555'" $ do
+            let word = "5555" :: ByteString
+            parseChunkSize `shouldSucceedOn` word
+            word ~?> parseChunkSize `leavesUnconsumed` ""
+        it "should parse the 32-bit word '9999'" $ do
+            let word = "9999" :: ByteString
+            parseChunkSize `shouldSucceedOn` word
+            word ~?> parseChunkSize `leavesUnconsumed` ""
 
 specRiff :: Spec
 specRiff =
