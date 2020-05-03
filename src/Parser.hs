@@ -2,10 +2,12 @@
 
 module Parser where
 
-import           Data.Attoparsec.Binary     (anyWord16le, anyWord32le)
-import           Data.Attoparsec.ByteString (Parser, string)
+import           Data.Attoparsec.Binary     (anyWord16le, anyWord32be,
+                                             anyWord32le)
+import           Data.Attoparsec.ByteString (Parser, string, take)
 import           Data.ByteString            (ByteString)
 import           Data.Word                  (Word16, Word32)
+import           Prelude                    hiding (take)
 
 import           Types
 
@@ -38,5 +40,10 @@ formatParser = do
     bitsPerSample <- anyWord16le
     return $ Format chunkID chunkSize audioFormat numChannels sampleRate byteRate blockAlign bitsPerSample
 
+{-# ANN dataParser ("HLint: ignore Use <$>" :: String) #-}
 dataParser :: Parser Data
-dataParser = undefined
+dataParser = do
+    chunkID <- anyWord32be
+    chunkSize <- anyWord32le
+    chunkData <- take $ fromIntegral $ toInteger chunkSize
+    return $ Data chunkID chunkSize chunkData
