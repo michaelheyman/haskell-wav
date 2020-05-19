@@ -5,14 +5,14 @@ module Parser where
 import           Data.Attoparsec.Binary     (anyWord16le, anyWord32be,
                                              anyWord32le)
 import           Data.Attoparsec.ByteString (Parser, string, take)
-import           Prelude                    hiding (concat, take)
+import           Prelude                    hiding (take)
 
 import           Types
 
 riffParser :: Parser Riff
 riffParser = do
     chunkID <- string "RIFF"
-    chunkSize <- anyWord32le
+    chunkSize <- divAnyWord anyWord32le
     chunkFormat <- string "WAVE"
     return $ Riff chunkID chunkSize chunkFormat
 
@@ -20,20 +20,20 @@ riffParser = do
 formatParser :: Parser Format
 formatParser = do
     chunkID <- string "fmt"
-    chunkSize <- anyWord32le
-    audioFormat <- anyWord16le
-    numChannels <- anyWord16le
-    sampleRate <- anyWord32le
-    byteRate <- anyWord32le
-    blockAlign <- anyWord16le
-    bitsPerSample <- anyWord16le
+    chunkSize <- divAnyWord anyWord32le
+    audioFormat <- divAnyWord anyWord16le
+    numChannels <- divAnyWord anyWord16le
+    sampleRate <- divAnyWord anyWord32le
+    byteRate <- divAnyWord anyWord32le
+    blockAlign <- divAnyWord anyWord16le
+    bitsPerSample <- divAnyWord anyWord16le
     return $ Format chunkID chunkSize audioFormat numChannels sampleRate byteRate blockAlign bitsPerSample
 
 {-# ANN dataParser ("HLint: ignore Use <$>" :: String) #-}
 dataParser :: Parser Data
 dataParser = do
-    chunkID <- anyWord32be
-    chunkSize <- anyWord32le
+    chunkID <- divAnyWord anyWord32be
+    chunkSize <- divAnyWord anyWord32le
     chunkData <- take $ fromIntegral $ toInteger chunkSize
     return $ Data chunkID chunkSize chunkData
 
@@ -44,3 +44,6 @@ wavParser = do
     format <- formatParser
     dataChunk <- dataParser
     return $ Wav riff format dataChunk
+
+divAnyWord :: Integral a => Parser a -> Parser a
+divAnyWord = fmap (`div` 256)

@@ -52,14 +52,16 @@ specData =
     describe "dataParser" $ do
         it "should parse a valid data chunk of size 1" $ do
             -- The data chunk is little endian, meaning that the bits read in the opposite order,
-            -- and the encoding symbols will map to ASCII. Therefore the encoding `\SOH\NUL\NUL\NUL`
-            -- equals 1: 1000
+            -- and the encoding symbols will map to ASCII. Therefore the encoding `\NUL\SOH\NUL\NUL`
+            -- equals 256
             -- TODO: find a more natural way of generating these symbols, and consider using QuickCheck
-            let chunk = "0001\SOH\NUL\NUL\NUL1" :: ByteString
+            let chunkSize = "\NUL\SOH\NUL\NUL" :: ByteString -- 0 1 0 0 -> 0 0 1 0 -> 256
+            let chunk = concat ["0001", chunkSize, "1"]
             dataParser `shouldSucceedOn` chunk
             chunk ~?> dataParser `leavesUnconsumed` ""
         it "should parse a valid data chunk of size 10" $ do
-            let chunk = "0001\LF\NUL\NUL\NUL1234567890" :: ByteString
+            let chunkSize = "\NUL\LF\NUL\NUL" :: ByteString
+            let chunk = concat ["0001", chunkSize, "1234567890"]
             dataParser `shouldSucceedOn` chunk
             chunk ~?> dataParser `leavesUnconsumed` ""
         it "should fail when all sub-chunks are missing" $
@@ -67,16 +69,16 @@ specData =
         it "should fail when the size and data chunks are missing" $
             dataParser `shouldFailOn` ("1111" :: ByteString)
         it "should fail when the chunk data is not as long as the chunk size" $ do
-            dataParser `shouldFailOn` ("0001\SOH\NUL\NUL\NUL" :: ByteString)
-            dataParser `shouldFailOn` ("0001\STX\NUL\NUL\NUL1" :: ByteString)
-            dataParser `shouldFailOn` ("0001\ETX\NUL\NUL\NUL12" :: ByteString)
-            dataParser `shouldFailOn` ("0001\EOT\NUL\NUL\NUL123" :: ByteString)
-            dataParser `shouldFailOn` ("0001\ENQ\NUL\NUL\NUL1234" :: ByteString)
-            dataParser `shouldFailOn` ("0001\ACK\NUL\NUL\NUL12345" :: ByteString)
-            dataParser `shouldFailOn` ("0001\BEL\NUL\NUL\NUL123456" :: ByteString)
-            dataParser `shouldFailOn` ("0001\BS\NUL\NUL\NUL1234567" :: ByteString)
-            dataParser `shouldFailOn` ("0001\HT\NUL\NUL\NUL12345678" :: ByteString)
-            dataParser `shouldFailOn` ("0001\LF\NUL\NUL\NUL123456789" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\SOH\NUL\NUL" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\STX\NUL\NUL1" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\ETX\NUL\NUL12" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\EOT\NUL\NUL123" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\ENQ\NUL\NUL1234" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\ACK\NUL\NUL12345" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\BEL\NUL\NUL123456" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\BS\NUL\NUL1234567" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\HT\NUL\NUL12345678" :: ByteString)
+            dataParser `shouldFailOn` ("0001\NUL\LF\NUL\NUL123456789" :: ByteString)
 
 specWav :: Spec
 specWav =
@@ -84,7 +86,7 @@ specWav =
         it "should parse a valid wav file" $ do
             let validRiff = "RIFF1000WAVE"
             let validFormat = "fmt11112233444455556677"
-            let validData = "0001\SOH\NUL\NUL\NUL1"
+            let validData = "0001\NUL\SOH\NUL\NUL1"
             let wav = concat [validRiff, validFormat, validData]
             wavParser `shouldSucceedOn` wav
             wav ~?> wavParser `leavesUnconsumed` ""
