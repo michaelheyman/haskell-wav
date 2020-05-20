@@ -50,6 +50,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - binary
     - directory
     - haskell-wav
     - hspec

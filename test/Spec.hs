@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import           Data.ByteString       (ByteString, concat)
+import           Data.Binary           (encode)
+import           Data.ByteString       (ByteString)
+import qualified Data.ByteString.Lazy  as BL
+import           Data.Word
+import           Debug.Trace
 import           Parser
 import           Test.Hspec
 import           Test.Hspec.Attoparsec
@@ -54,14 +58,14 @@ specData =
             -- The data chunk is little endian, meaning that the bits read in the opposite order,
             -- and the encoding symbols will map to ASCII. Therefore the encoding `\NUL\SOH\NUL\NUL`
             -- equals 256
-            -- TODO: find a more natural way of generating these symbols, and consider using QuickCheck
-            let chunkSize = "\NUL\SOH\NUL\NUL" :: ByteString -- 0 1 0 0 -> 0 0 1 0 -> 256
-            let chunk = concat ["0001", chunkSize, "1"]
+            -- TODO: consider using QuickCheck
+            let chunkSize = encodeWord 1
+            let chunk = BL.concat ["0001", chunkSize, "1"]
             dataParser `shouldSucceedOn` chunk
             chunk ~?> dataParser `leavesUnconsumed` ""
         it "should parse a valid data chunk of size 10" $ do
-            let chunkSize = "\NUL\LF\NUL\NUL" :: ByteString
-            let chunk = concat ["0001", chunkSize, "1234567890"]
+            let chunkSize = encodeWord 10
+            let chunk = BL.concat ["0001", chunkSize, "1234567890"]
             dataParser `shouldSucceedOn` chunk
             chunk ~?> dataParser `leavesUnconsumed` ""
         it "should fail when all sub-chunks are missing" $
@@ -69,16 +73,17 @@ specData =
         it "should fail when the size and data chunks are missing" $
             dataParser `shouldFailOn` ("1111" :: ByteString)
         it "should fail when the chunk data is not as long as the chunk size" $ do
-            dataParser `shouldFailOn` ("0001\NUL\SOH\NUL\NUL" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\STX\NUL\NUL1" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\ETX\NUL\NUL12" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\EOT\NUL\NUL123" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\ENQ\NUL\NUL1234" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\ACK\NUL\NUL12345" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\BEL\NUL\NUL123456" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\BS\NUL\NUL1234567" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\HT\NUL\NUL12345678" :: ByteString)
-            dataParser `shouldFailOn` ("0001\NUL\LF\NUL\NUL123456789" :: ByteString)
+            -- Will fail when attempting to parse chunkSize N bytes of a chunkData size of N - 1
+            dataParser `shouldFailOn` BL.concat ["0001", encode (1 :: Word32), ""]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (2 :: Word32), "1"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (3 :: Word32), "12"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (4 :: Word32), "123"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (5 :: Word32), "1234"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (6 :: Word32), "12345"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (7 :: Word32), "123456"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (8 :: Word32), "1234567"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (9 :: Word32), "12345678"]
+            dataParser `shouldFailOn` BL.concat ["0001", encode (10 :: Word32), "123456789"]
 
 specWav :: Spec
 specWav =
@@ -86,10 +91,22 @@ specWav =
         it "should parse a valid wav file" $ do
             let validRiff = "RIFF1000WAVE"
             let validFormat = "fmt11112233444455556677"
-            let validData = "0001\NUL\SOH\NUL\NUL1"
-            let wav = concat [validRiff, validFormat, validData]
+            let validData = BL.concat ["0001", encodeWord 1, "1"]
+            let wav = BL.concat [validRiff, validFormat, validData]
             wavParser `shouldSucceedOn` wav
             wav ~?> wavParser `leavesUnconsumed` ""
+
+{-|
+    Encodes a Word32 into a lazy ByteString and shifts its result to the left.
+    Example:
+
+    encodeWord (1 :: Word32)
+    -- "\NUL\SOH\NUL\NUL"
+-}
+encodeWord :: Word32 -> BL.ByteString
+encodeWord x =
+    let m = x * 256 in
+        trace ("value: " ++ show x) encode (m * 256 :: Word32)
 
 main :: IO ()
 main = do
