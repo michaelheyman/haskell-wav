@@ -9,8 +9,6 @@ import           Parser
 import           Test.Hspec
 import           Test.Hspec.Attoparsec
 
-import           Prelude               hiding (concat)
-
 specRiff :: Spec
 specRiff =
     describe "riffParser" $ do
