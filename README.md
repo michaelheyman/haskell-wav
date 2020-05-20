@@ -7,10 +7,22 @@ It allows developers to programmatically query the contents of these types of fi
 
 ## How to Develop
 
-### Running the Application
+### Building the Application
 
 1. Install dependencies: `stack install`
-1. Start the application: `stack build`
+2. Start the application: `stack build`
+
+### Running the Application
+
+A `Main` has been provided to test the application. To test the application:
+
+1. Run the application interactively with a REPL: `stack ghci`
+2. Load the `Main` source file: `:l app/Main.hs`
+3. Run the `main` program inside the REPL: `main`
+4. Follow the prompts and input an absolute or relative path to a valid example WAV file:
+    * `dist/wav/cat_meow_x.wav`
+    * `dist/wav/CantinaBand3.wav`
+    * `dist/wav/StarWars3.wav`
 
 ### Continuous Compilation with GHCID
 
