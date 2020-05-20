@@ -20,9 +20,10 @@ A `Main` has been provided to test the application. To test the application:
 2. Load the `Main` source file: `:l app/Main.hs`
 3. Run the `main` program inside the REPL: `main`
 4. Follow the prompts and input an absolute or relative path to a valid example WAV file:
-    * `dist/wav/cat_meow_x.wav`
-    * `dist/wav/CantinaBand3.wav`
-    * `dist/wav/StarWars3.wav`
+    * `example/wav/about_time.wav`
+    * `example/wav/cat_meow_x.wav`
+    * `example/wav/CantinaBand3.wav`
+    * `example/wav/StarWars3.wav`
 
 ### Continuous Compilation with GHCID
 
