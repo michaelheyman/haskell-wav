@@ -17,9 +17,15 @@ It allows developers to programmatically query the contents of these types of fi
 1. Install `ghcid`: `stack install ghcid`
 2. Run `ghcid` while developing to compile and reload on code changes:
 
-```bash
-ghcid --command="stack ghci src/Parser.hs test/Spec.hs"
-```
+    ```bash
+    ghcid --command="stack ghci src/Parser.hs test/Spec.hs"
+    ```
+
+    or
+
+    ```bash
+    ghcid --command="stack ghci path/to/file" --test=":!stack test"
+    ```
 
 ### Before Committing Changes
 
