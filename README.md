@@ -27,17 +27,26 @@ A `Main` has been provided to test the application. To test the application:
 
 ### Continuous Compilation with GHCID
 
-1. Install `ghcid`: `stack install ghcid`
-2. Run `ghcid` while developing to compile and reload on code changes:
+The following examples require `ghcid`. Install it via `stack install ghcid`.
+
+Run `ghcid` while developing to compile and reload on code changes. Here are a few options
+
+* Continuously compile application
 
     ```bash
-    ghcid --command="stack ghci src/Parser.hs test/Spec.hs"
+    ghcid --command="stack ghci haskell-wav"
     ```
 
-    or
+* Continuously compile application and tests
 
     ```bash
-    ghcid --command="stack ghci path/to/file" --test=":!stack test"
+    ghcid --command="stack ghci haskell-wav:haskell-wav-test"
+    ```
+
+* Continuously compile application and run tests
+
+    ```bash
+    ghcid --command="stack ghci haskell-wav" --test=":!stack test"
     ```
 
 ### Before Committing Changes
