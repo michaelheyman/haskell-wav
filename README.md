@@ -94,3 +94,12 @@ The WAV binary file format is split three chunks:
 | SubchunkID   |                  4 |                  36 | Big    |
 | SubchunkSize |                  4 |                  40 | Little |
 | Data         |       SubchunkSize |                  44 | Little |
+
+## Documentation
+
+This application is documented with haddock-compatible annotations.
+
+To view the documentation:
+
+* Build the documentation artifacts: `stack ghci --only-locals`
+* View the generated docs in the browser: `stack haddock --open haskell-wav`

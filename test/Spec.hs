@@ -94,13 +94,11 @@ specWav =
             wavParser `shouldSucceedOn` wav
             wav ~?> wavParser `leavesUnconsumed` ""
 
-{-|
-    Encodes a Word32 into a lazy ByteString and shifts its result to the left.
-    Example:
-
-    encodeWord (1 :: Word32)
-    -- "\NUL\SOH\NUL\NUL"
--}
+-- | Encodes a Word32 into a lazy ByteString and shifts its result to the left.
+-- For example,
+-- >encodeWord (1 :: Word32)
+-- will return
+-- >"\NUL\SOH\NUL\NUL"
 encodeWord :: Word32 -> BL.ByteString
 encodeWord x =
     let m = x * 256 in

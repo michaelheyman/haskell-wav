@@ -1,5 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- |
+-- Module:      Parser
+-- Copyright:   (c) 2020 Michael Heyman
+-- Description : Definition of the WAV spec parsers
+-- License:     MIT
+-- Maintainer:  Michael Heyman <michaelheyman@users.noreply.github.com>
+-- Stability:   experimental
+-- Portability: portable
+--
+-- Definition of the WAV spec parsers.
+
 module Parser where
 
 import           Data.Attoparsec.Binary     (anyWord16le, anyWord32be,
@@ -9,6 +20,7 @@ import           Prelude                    hiding (take)
 
 import           Types
 
+-- | Parse the RIFF chunk
 riffParser :: Parser Riff
 riffParser = do
     chunkID <- string "RIFF"
@@ -16,6 +28,7 @@ riffParser = do
     chunkFormat <- string "WAVE"
     return $ Riff chunkID chunkSize chunkFormat
 
+-- | Parse the fmt chunk
 {-# ANN formatParser ("HLint: ignore Use <$>" :: String) #-}
 formatParser :: Parser Format
 formatParser = do
@@ -29,6 +42,7 @@ formatParser = do
     bitsPerSample <- divAnyWord anyWord16le
     return $ Format chunkID chunkSize audioFormat numChannels sampleRate byteRate blockAlign bitsPerSample
 
+-- | Parse the data chunk
 {-# ANN dataParser ("HLint: ignore Use <$>" :: String) #-}
 dataParser :: Parser Data
 dataParser = do
@@ -37,6 +51,7 @@ dataParser = do
     chunkData <- take $ fromIntegral $ toInteger chunkSize
     return $ Data chunkID chunkSize chunkData
 
+-- | Parse the WAV file
 {-# ANN wavParser ("HLint: ignore Use <$>" :: String) #-}
 wavParser :: Parser Wav
 wavParser = do
@@ -45,5 +60,7 @@ wavParser = do
     dataChunk <- dataParser
     return $ Wav riff format dataChunk
 
+-- | Helper function to normalize the resulting value of a Parser with a
+-- polymorphic type that is constrained to be an integral.
 divAnyWord :: Integral a => Parser a -> Parser a
 divAnyWord = fmap (`div` 256)
