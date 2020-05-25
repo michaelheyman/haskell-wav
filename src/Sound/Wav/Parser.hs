@@ -15,10 +15,17 @@ module Sound.Wav.Parser where
 
 import           Data.Attoparsec.Binary     (anyWord16le, anyWord32be,
                                              anyWord32le)
-import           Data.Attoparsec.ByteString (Parser, string, take)
-import           Prelude                    hiding (take)
+import           Data.Attoparsec.ByteString (Parser, parseOnly, string, take)
+import           Data.ByteString            (readFile)
+import           Prelude                    hiding (readFile, take)
 
 import           Sound.Wav.Parser.Types
+
+-- | Parse a WAV file
+parseWavFile :: FilePath -> IO (Either String Wav)
+parseWavFile filePath = do
+    contents <- readFile filePath
+    return $ parseOnly wavParser contents
 
 -- | Parse the RIFF chunk
 riffParser :: Parser Riff
