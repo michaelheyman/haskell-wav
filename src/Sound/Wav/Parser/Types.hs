@@ -73,7 +73,7 @@
 -- +--------------+--------------------+---------------------+--------+
 --
 
-module Types where
+module Sound.Wav.Parser.Types where
 
 import           Data.ByteString (ByteString)
 import           Data.Word

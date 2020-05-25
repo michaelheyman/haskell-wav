@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.33.1.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e83ff69c69e47dd1212078b4959ca19cad4bedf2f98d3af5454f6e25fb2f379f
+-- hash: aaa77dcb94ef28792a5f98895c905541b9f793af0a808eadabf470eb54201193
 
 name:           haskell-wav
 version:        0.1.0.0
@@ -27,8 +27,8 @@ source-repository head
 
 library
   exposed-modules:
-      Parser
-      Types
+      Sound.Wav.Parser
+      Sound.Wav.Parser.Types
   other-modules:
       Paths_haskell_wav
   hs-source-dirs:

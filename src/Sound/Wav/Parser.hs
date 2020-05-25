@@ -11,14 +11,14 @@
 --
 -- Definition of the WAV spec parsers.
 
-module Parser where
+module Sound.Wav.Parser where
 
 import           Data.Attoparsec.Binary     (anyWord16le, anyWord32be,
                                              anyWord32le)
 import           Data.Attoparsec.ByteString (Parser, string, take)
 import           Prelude                    hiding (take)
 
-import           Types
+import           Sound.Wav.Parser.Types
 
 -- | Parse the RIFF chunk
 riffParser :: Parser Riff

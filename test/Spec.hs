@@ -5,7 +5,7 @@ import           Data.ByteString       (ByteString)
 import qualified Data.ByteString.Lazy  as BL
 import           Data.Word
 import           Debug.Trace
-import           Parser
+import           Sound.Wav.Parser
 import           Test.Hspec
 import           Test.Hspec.Attoparsec
 
