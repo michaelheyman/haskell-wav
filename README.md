@@ -54,6 +54,8 @@ Run `ghcid` while developing to compile and reload on code changes. Here are a f
 1. Ensure that `pre-commit` and its configuration are installed
     * Install `pre-commit`: `brew install pre-commit` or `pip install pre-commit`
     * Install the commit hooks: `pre-commit install`
+    * Install `hlint`: `stack install hlint`
+    * Install `stylish-haskell`: `stack install stylish-haskell`
 2. Run `hpack` if changes are made to `package.yaml` or new modules are added.
 
 ## WAV Specification
